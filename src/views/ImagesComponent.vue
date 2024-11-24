@@ -2,6 +2,7 @@
 import ImageComponent from '@/components/ImageComponent.vue'
 import ImageUploader from '@/components/ImageUploader.vue'
 import WordpressLogin from '@/components/WordpressLogin.vue'
+import { APP_BASE_URL } from '@/config/sd'
 import { viewTransition } from '@/utils/viewTransition'
 import { initWpCredentials } from '@/utils/wpCredentials'
 import { extractSizes, type Image, type WpResponse } from '@/utils/wpUploader'
@@ -9,12 +10,13 @@ import { ref } from 'vue'
 </script>
 
 <script lang="ts">
-const BASE_URL = 'https://os.ar.dhamma.org'
+const WP_BASE_URL = 'https://os.ar.dhamma.org'
 const LOGIN_URL =
-  BASE_URL +
+  WP_BASE_URL +
   '/wp-admin/authorize-application.php' +
   '?app_name=Editor de boletines' +
-  '&success_url=https://alvarezrrj.github.io/boletin.constructor'
+  '&success_url=https://alvarezrrj.github.io' +
+  APP_BASE_URL
 const images = ref<Image[]>([])
 const wpBasicAuth = ref<string>()
 const loading = ref(false)
@@ -33,7 +35,7 @@ async function fetchImages(page = 1, per_page = IMAGES_PER_PAGE) {
   if (loading.value) return
   loading.value = true
   error.value = ''
-  const FETCH_URL = BASE_URL + '/wp-json/wp/v2/media'
+  const FETCH_URL = WP_BASE_URL + '/wp-json/wp/v2/media'
   try {
     const response = await fetch(
       FETCH_URL + `?page=${page}&per_page=${per_page}`,
@@ -78,7 +80,7 @@ if (wpBasicAuth.value) fetchImages()
       <ImageUploader
         :wp-basic-auth="wpBasicAuth"
         :on-upload="appendToImages"
-        :base-url="BASE_URL"
+        :base-url="WP_BASE_URL"
       />
 
       <hr />
@@ -87,11 +89,11 @@ if (wpBasicAuth.value) fetchImages()
         <template v-for="image in images" :key="image.thumbnail">
           <ImageComponent :image="image" />
         </template>
+        <div class="loader">
+          <span v-if="loading" :aria-busy="loading"></span>
+          <del v-if="error">{{ error }}</del>
+        </div>
       </div>
-
-      <p :aria-busy="loading">
-        <del>{{ error }}</del>
-      </p>
     </template>
 
     <template v-else>
@@ -112,5 +114,9 @@ if (wpBasicAuth.value) fetchImages()
   gap: var(--pico-spacing);
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   width: calc(100vw - 4 * var(--pico-spacing));
+}
+.loader {
+  display: grid;
+  place-items: center;
 }
 </style>

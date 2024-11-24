@@ -21,7 +21,7 @@ const routes = computed<{ [key: string]: Component }>(() => ({
 }))
 
 const currentPath = ref(
-  document.referrer.includes('os.ar.dhamma.org') ? '/fotos' : '/'
+  document.referrer.includes('os.ar.dhamma.org') ? '#/fotos' : '#/'
 )
 const currentView = computed(
   () => routes.value[currentPath.value.slice(1) || '/'] || NotFound

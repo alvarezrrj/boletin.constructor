@@ -9,7 +9,7 @@
 ## Tech stack
 
 - [**Vue**](https://vuejs.org/)
-- [**Github pages**](https://pages.github.com/): para servir la aplicación, disponible en https://alvarezrrj.github.io/boletin.constructor/
+- [**Github pages**](https://pages.github.com/): para servir la aplicación, disponible en https://alvarezrrj.github.io/boletin/
 - [**Firebase**](https://firebase.google.com/products/hosting/): para autenticación y colaboración en tiempo real.
 - [**API Wordpress**](https://developer.wordpress.org/rest-api/reference/): para subir imágenes.
 

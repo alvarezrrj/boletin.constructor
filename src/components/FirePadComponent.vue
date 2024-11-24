@@ -50,9 +50,9 @@ function initializePad(defaultText?: string) {
     props.onChange(monacoEditor.getValue())
   )
   firepad = fromMonaco(fire.dbRef, monacoEditor, {
-    userName: fire.auth!.user?.email?.split('@')[0],
+    userName: fire.user?.email?.split('@')[0],
     userColor: userColor.value,
-    userId: fire.auth!.user?.uid,
+    userId: fire.user?.uid,
     defaultText
   })
 }
